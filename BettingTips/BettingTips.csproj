@@ -222,6 +222,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\InboundMessage.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\OutboundMessage.cs" />
     <Compile Include="Models\Subscriber.cs" />
     <Compile Include="Models\Tip.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
