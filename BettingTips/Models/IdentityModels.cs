@@ -29,5 +29,7 @@ namespace BettingTips.Models
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<Subscriber> Subscribers { get; set; }
     }
 }
