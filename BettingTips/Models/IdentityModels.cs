@@ -32,5 +32,6 @@ namespace BettingTips.Models
 
         public DbSet<Subscriber> Subscribers { get; set; }
         public DbSet<Tip> Tips { get; set; }
+        public DbSet<InboundMessage> InboundMessages { get; set; }
     }
 }
