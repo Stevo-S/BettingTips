@@ -34,5 +34,6 @@ namespace BettingTips.Models
         public DbSet<Tip> Tips { get; set; }
         public DbSet<InboundMessage> InboundMessages { get; set; }
         public DbSet<OutboundMessage> OutboundMessages { get; set; }
+        public DbSet<ScheduledTip> ScheduledTips { get; set; }
     }
 }
