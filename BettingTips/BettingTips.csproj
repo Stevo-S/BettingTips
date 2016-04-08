@@ -214,6 +214,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SubscribersController.cs" />
     <Compile Include="Controllers\TipsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -326,6 +327,11 @@
     <Content Include="Views\Tips\Edit.cshtml" />
     <Content Include="Views\Tips\Index.cshtml" />
     <Content Include="Views\Tips\Upload.cshtml" />
+    <Content Include="Views\Subscribers\Create.cshtml" />
+    <Content Include="Views\Subscribers\Delete.cshtml" />
+    <Content Include="Views\Subscribers\Details.cshtml" />
+    <Content Include="Views\Subscribers\Edit.cshtml" />
+    <Content Include="Views\Subscribers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
