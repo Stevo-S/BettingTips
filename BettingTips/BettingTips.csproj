@@ -213,6 +213,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InboundMessagesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SubscribersController.cs" />
     <Compile Include="Controllers\TipsController.cs" />
@@ -332,6 +333,11 @@
     <Content Include="Views\Subscribers\Details.cshtml" />
     <Content Include="Views\Subscribers\Edit.cshtml" />
     <Content Include="Views\Subscribers\Index.cshtml" />
+    <Content Include="Views\InboundMessages\Create.cshtml" />
+    <Content Include="Views\InboundMessages\Delete.cshtml" />
+    <Content Include="Views\InboundMessages\Details.cshtml" />
+    <Content Include="Views\InboundMessages\Edit.cshtml" />
+    <Content Include="Views\InboundMessages\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
