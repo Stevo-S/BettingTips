@@ -1,0 +1,58 @@
+﻿@model BettingTips.Models.ScheduledTip
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ScheduledTip</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TipNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TipNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tip)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tip)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateScheduled)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateScheduled)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Destination)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Destination)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ServiceId)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

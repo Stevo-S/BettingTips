@@ -216,6 +216,7 @@
     <Compile Include="Controllers\InboundMessagesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OutboundMessagesController.cs" />
+    <Compile Include="Controllers\ScheduledTipsController.cs" />
     <Compile Include="Controllers\SubscribersController.cs" />
     <Compile Include="Controllers\TipsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -344,6 +345,11 @@
     <Content Include="Views\OutboundMessages\Details.cshtml" />
     <Content Include="Views\OutboundMessages\Edit.cshtml" />
     <Content Include="Views\OutboundMessages\Index.cshtml" />
+    <Content Include="Views\ScheduledTips\Create.cshtml" />
+    <Content Include="Views\ScheduledTips\Delete.cshtml" />
+    <Content Include="Views\ScheduledTips\Details.cshtml" />
+    <Content Include="Views\ScheduledTips\Edit.cshtml" />
+    <Content Include="Views\ScheduledTips\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
