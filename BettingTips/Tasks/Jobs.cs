@@ -19,7 +19,7 @@ namespace BettingTips.Tasks
                 {
                     Destination = subscriber.PhoneNumber,
                     TipNumber = subscriber.NextTip,
-                    Tip = db.Tips.Where(t => t.TipNumber == subscriber.NextTip).First().Message,
+                    Tip = db.Tips.Where(t => t.Id == subscriber.NextTip).First().Message,
                     ServiceId = subscriber.ServiceId,
                     DateScheduled = DateTime.Now
                 };

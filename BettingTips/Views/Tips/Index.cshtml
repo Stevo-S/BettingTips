@@ -1,0 +1,49 @@
+﻿@model IEnumerable<BettingTips.Models.Tip>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div>
+        <a href=@Url.Action("Create") class="btn btn-primary">
+            New Tip
+            <span class="badge">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </span>
+        </a>
+    
+
+        <a href=@Url.Action("Upload") class="btn btn-primary">
+            Upload File
+            <span class="badge">
+                <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+            </span>
+        </a>
+</div>
+
+<br />
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Message)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Message)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
