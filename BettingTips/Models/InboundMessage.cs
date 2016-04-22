@@ -15,5 +15,7 @@ namespace BettingTips.Models
         public string UpdateDescription { get; set; }
         public string SyncOrderType { get; set; }
         public string traceUniqueId { get; set; }
+        public string LinkID { get; set; }
+        public string source { get; set; }
     }
 }

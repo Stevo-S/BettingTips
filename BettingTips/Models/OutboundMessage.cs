@@ -11,6 +11,7 @@ namespace BettingTips.Models
         public string Destination { get; set; }
         public string Message { get; set; }
         public DateTime MessageDate { get; set; }
+        public string  LinkID { get; set; }
         public string ServiceId { get; set; }
     }
 }

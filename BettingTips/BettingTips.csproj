@@ -250,6 +250,14 @@
     <Compile Include="Migrations\201604081405563_RemoveTipNumber.Designer.cs">
       <DependentUpon>201604081405563_RemoveTipNumber.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604151514149_AddLinkIdToMessages.cs" />
+    <Compile Include="Migrations\201604151514149_AddLinkIdToMessages.Designer.cs">
+      <DependentUpon>201604151514149_AddLinkIdToMessages.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604151526583_AddSourceToInboundMessages.cs" />
+    <Compile Include="Migrations\201604151526583_AddSourceToInboundMessages.Designer.cs">
+      <DependentUpon>201604151526583_AddSourceToInboundMessages.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -383,6 +391,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604081405563_RemoveTipNumber.resx">
       <DependentUpon>201604081405563_RemoveTipNumber.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604151514149_AddLinkIdToMessages.resx">
+      <DependentUpon>201604151514149_AddLinkIdToMessages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604151526583_AddSourceToInboundMessages.resx">
+      <DependentUpon>201604151526583_AddSourceToInboundMessages.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
