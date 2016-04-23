@@ -10,27 +10,36 @@ namespace BettingTips.Tasks
     {
         public static void ScheduleTipMessages()
         {
-            ApplicationDbContext db = new ApplicationDbContext();
-            var subscribers = db.Subscribers;
-
-            foreach(var subscriber in subscribers)
+            // Insert new Scheduled Messages containing tips of the day
+            // Each subscriber gets a different tip depending on their progress
+            // on the list of tips
+            using (var db = new ApplicationDbContext())
             {
-                var tip = new ScheduledTip()
+                var subscribers = db.Subscribers.ToList();
+
+                foreach (var subscriber in subscribers)
                 {
-                    Destination = subscriber.PhoneNumber,
-                    TipNumber = subscriber.NextTip,
-                    Tip = db.Tips.Where(t => t.Id == subscriber.NextTip).First().Message,
-                    ServiceId = subscriber.ServiceId,
-                    DateScheduled = DateTime.Now
-                };
+                    var tip = db.Tips.Find(subscriber.NextTip);
+                    if (tip != null)
+                    {
+                        var tipMessage = new ScheduledTip()
+                        {
+                            Destination = subscriber.PhoneNumber,
+                            TipNumber = subscriber.NextTip,
+                            Tip = tip.Message,
+                            ServiceId = subscriber.ServiceId,
+                            DateScheduled = DateTime.Now
+                        };
 
-                db.ScheduledTips.Add(tip);
+                        db.ScheduledTips.Add(tipMessage);
 
-                subscriber.NextTip += 1; 
-                db.Entry(subscriber).State = System.Data.Entity.EntityState.Modified;
+                        subscriber.NextTip += 1;
+                        db.Entry(subscriber).State = System.Data.Entity.EntityState.Modified;
+
+                        db.SaveChanges();
+                    }
+                }
             }
-
-            db.SaveChanges();
         }
     }
 }
