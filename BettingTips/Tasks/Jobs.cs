@@ -20,7 +20,7 @@ namespace BettingTips.Tasks
                 foreach (var subscriber in subscribers)
                 {
                     var tip = db.Tips.Find(subscriber.NextTip);
-                    if (tip != null)
+                    if (tip != null && subscriber.isActive)
                     {
                         var tipMessage = new ScheduledTip()
                         {
