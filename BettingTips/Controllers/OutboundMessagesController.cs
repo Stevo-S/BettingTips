@@ -10,6 +10,7 @@ using BettingTips.Models;
 
 namespace BettingTips.Controllers
 {
+    [Authorize]
     public class OutboundMessagesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

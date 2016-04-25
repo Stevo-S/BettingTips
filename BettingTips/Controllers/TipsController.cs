@@ -11,6 +11,7 @@ using OfficeOpenXml;
 
 namespace BettingTips.Controllers
 {
+    [Authorize]
     public class TipsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

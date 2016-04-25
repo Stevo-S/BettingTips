@@ -10,6 +10,7 @@ using BettingTips.Models;
 
 namespace BettingTips.Controllers
 {
+    [Authorize]
     public class ScheduledTipsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
