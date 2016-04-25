@@ -4,34 +4,34 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>List of Inbound Messages</h2>
 
-<p>
+@*<p>
     @Html.ActionLink("Create New", "Create")
-</p>
+</p>*@
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Message)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.ServiceId)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ProductId)
-        </th>
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.InDate)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.UpdateDescription)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.SyncOrderType)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.traceUniqueId)
-        </th>
+        </th>*@
         <th></th>
     </tr>
 
@@ -58,11 +58,11 @@
         <td>
             @Html.DisplayFor(modelItem => item.traceUniqueId)
         </td>
-        <td>
+        @*<td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Details", "Details", new { id=item.Id }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
+        </td>*@
     </tr>
 }
 
