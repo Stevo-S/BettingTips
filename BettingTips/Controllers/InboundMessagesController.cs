@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BettingTips.Models;
+using PagedList;
 
 namespace BettingTips.Controllers
 {
@@ -16,9 +17,39 @@ namespace BettingTips.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: InboundMessages
-        public ActionResult Index()
+        public ActionResult Index(String phoneNumber, String messageText, DateTime? startDate, DateTime? endDate, int? page)
         {
-            return View(db.InboundMessages.ToList());
+            var messages = from m in db.InboundMessages
+                           select m;
+
+            if (!String.IsNullOrEmpty(phoneNumber))
+            {
+                messages = messages.Where(m => m.source.Contains(phoneNumber));
+                ViewBag.phoneFilter = phoneNumber;
+            }
+
+            if (!String.IsNullOrEmpty(messageText))
+            {
+                messages = messages.Where(m => m.Message.Contains(messageText));
+                ViewBag.messageFilter = messageText;
+            }
+
+            if (startDate != null)
+            {
+                if (endDate < startDate || endDate == null)
+                {
+                    endDate = DateTime.Now;
+                }
+                messages = messages.Where(m => m.InDate > startDate && m.InDate < endDate);
+                ViewBag.startDateFilter = startDate;
+                ViewBag.endDateFilter = endDate;
+            }
+
+            messages = messages.OrderByDescending(m => m.InDate);
+            ViewBag.Total = messages.Count();
+            int pageSize = 25;
+            int pageNumber = (page ?? 1);
+            return View(messages.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: InboundMessages/Details/5

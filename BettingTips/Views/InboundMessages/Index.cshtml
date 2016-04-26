@@ -1,18 +1,60 @@
-﻿@model IEnumerable<BettingTips.Models.InboundMessage>
+﻿@model PagedList.IPagedList<BettingTips.Models.InboundMessage>
+@using PagedList.Mvc;
+
 
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>List of Inbound Messages</h2>
+<h3>Total <span class="badge">@ViewBag.Total</span></h3>
 
-@*<p>
-    @Html.ActionLink("Create New", "Create")
-</p>*@
-<table class="table">
+<div class="well">
+    <form class="form-inline" action="~/InboundMessages/Index" method="get">
+        <div class="input-group input-group-sm col-md-2">
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-phone"></span>
+            </span>
+            @Html.TextBox("phoneNumber", "", new { @placeholder = "phone number", @class = "form-control" })
+        </div>
+        <div class="input-group input-group-sm col-md-2">
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-envelope"></span>
+            </span>
+            <input type="text" name="messageText" class="form-control" placeholder="SMS containing..." />
+        </div>
+        <div class="input-group input-group-sm col-md-2">
+            <span class="input-group-addon">
+                Between
+            </span>
+            <input type="datetime-local" name="startDate" class="form-control" />
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+        <div class="input-group input-group-sm col-md-2">
+            <span class="input-group-addon">
+                and
+            </span>
+            <input type="datetime-local" name="endDate" class="form-control" />
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+
+
+        <input type="submit" class="btn btn-warning" value="Filter" />
+    </form>
+</div>
+<br />
+
+<table class="table table-striped">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Message)
+            @Html.DisplayNameFor(model => model.First().source)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Message)
         </th>
         @*<th>
             @Html.DisplayNameFor(model => model.ServiceId)
@@ -21,10 +63,10 @@
             @Html.DisplayNameFor(model => model.ProductId)
         </th>*@
         <th>
-            @Html.DisplayNameFor(model => model.InDate)
+            @Html.DisplayNameFor(model => model.First().InDate)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UpdateDescription)
+            @Html.DisplayNameFor(model => model.First().UpdateDescription)
         </th>
         @*<th>
             @Html.DisplayNameFor(model => model.SyncOrderType)
@@ -38,27 +80,30 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Message)
+            @Html.DisplayFor(modelItem => item.source)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Message)
+        </td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.ServiceId)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ProductId)
-        </td>
+        </td>*@
         <td>
             @Html.DisplayFor(modelItem => item.InDate)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.UpdateDescription)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.SyncOrderType)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.traceUniqueId)
         </td>
-        @*<td>
+        <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Details", "Details", new { id=item.Id }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
@@ -67,3 +112,13 @@
 }
 
 </table>
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page,
+    phoneNumber = ViewBag.phoneFilter,
+    messageText = ViewBag.messageFilter,
+    startDate = ViewBag.startDateFilter,
+    endDate = ViewBag.endDateFilter
+}))
