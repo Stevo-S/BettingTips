@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using BettingTips.Models;
 using OfficeOpenXml;
+using PagedList;
 
 namespace BettingTips.Controllers
 {
@@ -17,9 +18,14 @@ namespace BettingTips.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Tips
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            return View(db.Tips.ToList());
+            var tips = from t in db.Tips
+                       select t;
+            tips = tips.OrderBy(t => t.Id);
+            int pageNumber = (page ?? 1);
+            int pageSize = 25;
+            return View(tips.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Tips/Details/5
