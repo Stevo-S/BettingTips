@@ -1,33 +1,78 @@
-﻿@model IEnumerable<BettingTips.Models.Subscriber>
+﻿@model PagedList.IPagedList<BettingTips.Models.Subscriber>
+@using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Subscribers";
 }
 
-<h2>Index</h2>
+<h2>List of Subscribers</h2>
+<h3>Total <span class="badge">@ViewBag.Total</span></h3>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
+<div class="well">
+    @using (Html.BeginForm("Index", "Subscribers", FormMethod.Get, new { @class = "form-inline" }))
+    {
+        <div class="input-group input-group-sm col-md-2">
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-phone"></span>
+            </span>
+            @Html.TextBox("phoneNumber", "", new { @placeholder = "phone number", @class = "form-control" })
+        </div>
+
+        <div class="input-group input-group-sm col-md-2">
+            <span class="input-group-addon">
+                Subscribed between
+            </span>
+            <input type="datetime-local" name="startDate" class="form-control" />
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+
+
+        <div class="input-group input-group-sm col-md-2">
+            <span class="input-group-addon">
+                and
+            </span>
+            <input type="datetime-local" name="endDate" class="form-control" />
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+
+        <div class="input-group input-group-sm col-md-2">
+            <select class="form-control" name="subscriptionStatus">
+                <option value="any">Active and Inactive</option>
+                <option value="active">Active only</option>
+                <option value="inactive">Inactive only</option>
+            </select>
+        </div>
+        
+
+        <input type="submit" class="btn btn-sm btn-warning" value="Filter" />
+    }
+</div>
+
+<br />
+
+<table class="table table-striped">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
+            @Html.DisplayNameFor(model => model.First().PhoneNumber)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.ServiceId)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.First().FirstSubscriptionDate)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FirstSubscriptionDate)
+            @Html.DisplayNameFor(model => model.First().LastSubscriptionDate)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastSubscriptionDate)
+            @Html.DisplayNameFor(model => model.First().NextTip)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.NextTip)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.isActive)
+            @Html.DisplayNameFor(model => model.First().isActive)
         </th>
         <th></th>
     </tr>
@@ -37,9 +82,9 @@
         <td>
             @Html.DisplayFor(modelItem => item.PhoneNumber)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.ServiceId)
-        </td>
+        </td>*@
         <td>
             @Html.DisplayFor(modelItem => item.FirstSubscriptionDate)
         </td>
@@ -52,12 +97,25 @@
         <td>
             @Html.DisplayFor(modelItem => item.isActive)
         </td>
-        <td>
+        @*<td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Details", "Details", new { id=item.Id }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
+        </td>*@
     </tr>
 }
 
 </table>
+
+<br />
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new
+{
+    page,
+    phoneNumber = ViewBag.phoneFilter,
+    startDate = ViewBag.startDateFilter,
+    endDate = ViewBag.endDateFilter,
+    subscriptionStatus = ViewBag.subscriptionStatusFilter
+}))

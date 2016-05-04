@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BettingTips.Models;
+using PagedList;
 
 namespace BettingTips.Controllers
 {
@@ -16,9 +17,49 @@ namespace BettingTips.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Subscribers
-        public ActionResult Index()
+        public ActionResult Index(string phoneNumber, DateTime? startDate, DateTime? endDate, string subscriptionStatus, int? page)
         {
-            return View(db.Subscribers.ToList());
+            var subscribers = from s in db.Subscribers
+                              select s;
+
+            // Filter by phoneNumber
+            if (!string.IsNullOrEmpty(phoneNumber))
+            {
+                subscribers = subscribers.Where(s => s.PhoneNumber.Contains(phoneNumber));
+                ViewBag.phoneFilter = phoneNumber;
+            }
+
+            // Filter by subscription status
+            if (!string.IsNullOrEmpty(subscriptionStatus))
+            {
+                if (subscriptionStatus == "active")
+                {
+                    subscribers = subscribers.Where(s => s.isActive == true);
+                }
+                else if (subscriptionStatus == "inactive")
+                {
+                    subscribers = subscribers.Where(p => !p.isActive == true);
+                }
+
+                ViewBag.subscriptionStatusFilter = subscriptionStatus;
+            }
+
+            if (startDate != null)
+            {
+                if (endDate < startDate || endDate == null)
+                {
+                    endDate = DateTime.Now;
+                }
+                subscribers = subscribers.Where(s => s.FirstSubscriptionDate > startDate && s.FirstSubscriptionDate < endDate);
+                ViewBag.startDateFilter = startDate;
+                ViewBag.endDateFilter = endDate;
+            }
+
+            subscribers = subscribers.OrderByDescending(s => s.FirstSubscriptionDate);
+            ViewBag.Total = subscribers.Count();
+            int pageSize = 25;
+            int pageNumber = (page ?? 1);
+            return View(subscribers.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Subscribers/Details/5
