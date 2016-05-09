@@ -1,8 +1,6 @@
 ﻿using BettingTips.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace BettingTips.Tasks
 {
@@ -36,10 +34,12 @@ namespace BettingTips.Tasks
                         subscriber.NextTip += 1;
                         db.Entry(subscriber).State = System.Data.Entity.EntityState.Modified;
 
-                        db.SaveChanges();
                     }
                 }
+
+                db.SaveChanges();
             }
         }
+
     }
 }

@@ -225,6 +225,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OutboundMessagesController.cs" />
     <Compile Include="Controllers\ScheduledTipsController.cs" />
+    <Compile Include="Controllers\SMSController.cs" />
     <Compile Include="Controllers\SubscribersController.cs" />
     <Compile Include="Controllers\TipsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -276,8 +277,10 @@
     <Compile Include="Models\Subscriber.cs" />
     <Compile Include="Models\Tip.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SMS\ShortCode.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Tasks\Jobs.cs" />
+    <Compile Include="Views\SMS\Message.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -367,6 +370,7 @@
     <Content Include="Views\ScheduledTips\Details.cshtml" />
     <Content Include="Views\ScheduledTips\Edit.cshtml" />
     <Content Include="Views\ScheduledTips\Index.cshtml" />
+    <Content Include="Views\SMS\Send.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
