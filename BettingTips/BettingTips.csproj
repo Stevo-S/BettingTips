@@ -267,8 +267,13 @@
     <Compile Include="Migrations\201604151526583_AddSourceToInboundMessages.Designer.cs">
       <DependentUpon>201604151526583_AddSourceToInboundMessages.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605101401136_AddDeliveries.cs" />
+    <Compile Include="Migrations\201605101401136_AddDeliveries.Designer.cs">
+      <DependentUpon>201605101401136_AddDeliveries.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Delivery.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\InboundMessage.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -410,6 +415,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604151526583_AddSourceToInboundMessages.resx">
       <DependentUpon>201604151526583_AddSourceToInboundMessages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605101401136_AddDeliveries.resx">
+      <DependentUpon>201605101401136_AddDeliveries.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

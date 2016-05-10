@@ -72,15 +72,10 @@ namespace BettingTips.SMS
             using (var client = new HttpClient(handler))
             {
                 client.BaseAddress = new Uri("http://196.201.216.13:8310");
-                //client.DefaultRequestHeaders.Add("Content-Type", "soap+xml; charset=utf-8");
 
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/SendSmsService/services/SendSms/");
                 request.Content = new StringContent(buildSMSXML(), Encoding.UTF8, "text/xml");
-
-                //var result = client.PostAsync("/SendSmsService/services/SendSms/", content).Result;
-                //string resultContent = result.Content.ReadAsStringAsync().Result;
-
-                //return resultContent;
+                
                 var result = client.SendAsync(request).Result;
                 string resultContent = result.Content.ReadAsStringAsync().Result;
                 return resultContent;

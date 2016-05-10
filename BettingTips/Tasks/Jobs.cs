@@ -36,10 +36,8 @@ namespace BettingTips.Tasks
 
                     }
                 }
-
                 db.SaveChanges();
             }
         }
-
     }
 }
