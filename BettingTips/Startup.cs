@@ -2,6 +2,7 @@
 using Hangfire;
 using Microsoft.Owin;
 using Owin;
+using System;
 
 [assembly: OwinStartupAttribute(typeof(BettingTips.Startup))]
 namespace BettingTips
@@ -16,7 +17,7 @@ namespace BettingTips
             app.UseHangfireServer();
             ConfigureAuth(app);
 
-            RecurringJob.AddOrUpdate(() => Jobs.ScheduleTipMessages(), Cron.Daily);
+            RecurringJob.AddOrUpdate(() => Jobs.ScheduleTipMessages(), Cron.Daily, TimeZoneInfo.Local);
         }
     }
 }
