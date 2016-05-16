@@ -23,6 +23,7 @@ namespace BettingTips.Models
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+
         }
 
         public static ApplicationDbContext Create()
@@ -36,5 +37,6 @@ namespace BettingTips.Models
         public DbSet<OutboundMessage> OutboundMessages { get; set; }
         public DbSet<ScheduledTip> ScheduledTips { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
+        public DbSet<MatchSpecificTip> MatchSpecificTips { get; set; }
     }
 }

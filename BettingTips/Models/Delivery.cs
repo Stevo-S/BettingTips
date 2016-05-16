@@ -13,8 +13,8 @@ namespace BettingTips.Models
         [StringLength(20)]
         public string Destination { get; set; }
 
-        [StringLength(1000)]
-        public string Message { get; set; }
+        [StringLength(100)]
+        public string DeliveryStatus { get; set; }
 
         [StringLength(50)]
         public string ServiceId { get; set; }
@@ -24,5 +24,6 @@ namespace BettingTips.Models
         public string TraceUniqueId { get; set; }
 
         public DateTime TimeStamp { get; set; }
+
     }
 }
