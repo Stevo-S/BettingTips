@@ -13,12 +13,15 @@ namespace BettingTips.Tasks
             // on the list of tips
             using (var db = new ApplicationDbContext())
             {
-                var subscribers = db.Subscribers.ToList();
+                db.Configuration.AutoDetectChangesEnabled = false;
+                db.Configuration.ValidateOnSaveEnabled = false;
+
+                var subscribers = db.Subscribers.Where(s => s.isActive).ToList();
 
                 foreach (var subscriber in subscribers)
                 {
                     var tip = db.Tips.Find(subscriber.NextTip);
-                    if (tip != null && subscriber.isActive)
+                    if (tip != null)
                     {
                         var tipMessage = new ScheduledTip()
                         {
