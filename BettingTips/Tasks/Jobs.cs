@@ -1,5 +1,7 @@
 ﻿using BettingTips.Models;
+using BettingTips.SMS;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BettingTips.Tasks
@@ -40,6 +42,33 @@ namespace BettingTips.Tasks
                     }
                 }
                 db.SaveChanges();
+            }
+        }
+
+        // Send/re-send scheduled messages
+        public static void SendScheduledMessages()
+        {
+            IEnumerable<ScheduledTip> queuedTips;
+
+            using (var db = new ApplicationDbContext())
+            {
+                var successfulMessagesIdList = db.Deliveries.Where(d => d.TimeStamp > DateTime.Today && 
+                                        d.DeliveryStatus.ToLower().Equals("deliveredtoterminal")).Select(d => d.Correlator).ToList();
+
+                queuedTips = db.ScheduledTips.Where(st => st.DateScheduled > DateTime.Today &&
+                                                !successfulMessagesIdList.Contains(st.Id)).ToList();
+            }
+
+            foreach (var tip in queuedTips)
+            {
+                var tipMessage = new Message()
+                {
+                    Destination = tip.Destination,
+                    Text = tip.Tip,
+                    Correlator =  tip.Id.ToString()
+                };
+
+                tipMessage.Send();
             }
         }
     }
