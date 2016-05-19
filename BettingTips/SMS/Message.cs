@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Web;
 using System.Xml.Linq;
 
 namespace BettingTips.SMS
@@ -13,6 +10,7 @@ namespace BettingTips.SMS
     {
         public string Destination { get; set; }
         public string Text { get; set; }
+        public string Correlator { get; set; }
         public string TimeStamp { get; set; }
 
         public Message()
@@ -29,9 +27,9 @@ namespace BettingTips.SMS
         private string buildSMSXML(string serviceId = "6013252000099929", string sender = "20043")
         {
             //string timeStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
-            XNamespace soapenv = "http://schemas.xmlsoap.org/soap/envelope/";
-            XNamespace v2 = "http://www.huawei.com.cn/schema/common/v2_1";
-            XNamespace loc = "http://www.csapi.org/schema/parlayx/sms/send/v2_2/local";
+            XNamespace soapenv = ShortCode.SOAPRequestNamespaces["soapenv"];
+            XNamespace v2 = ShortCode.SOAPRequestNamespaces["v2"];
+            XNamespace loc = ShortCode.SOAPRequestNamespaces["loc"];
             XElement soapEnvelope =
                 new XElement(soapenv + "Envelope",
                     new XAttribute(XNamespace.Xmlns + "soapenv", soapenv.NamespaceName),
@@ -56,7 +54,7 @@ namespace BettingTips.SMS
                             new XElement(loc + "receiptRequest",
                                 new XElement("endpoint", ShortCode.GetDeliveryNotificationEndpoint()),
                                 new XElement("interfaceName", "SmsNotification"),
-                                new XElement("correlator", ShortCode.correlatorGenerator.Next(1234567))
+                                new XElement("correlator", Correlator)
                             ) // End of receiptRequest
                         ) // End of sendSms
                     ) // End of Soap Body
@@ -71,9 +69,9 @@ namespace BettingTips.SMS
             using (var handler = new HttpClientHandler() { Credentials = new NetworkCredential(ShortCode.GetUsername(), ShortCode.HashPassword(ShortCode.GetSpID() + ShortCode.GetPassword() + TimeStamp)) })
             using (var client = new HttpClient(handler))
             {
-                client.BaseAddress = new Uri("http://196.201.216.13:8310");
+                client.BaseAddress = new Uri("http://localhost:57074");
 
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/SendSmsService/services/SendSms/");
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/SMSServices/SendSms/");
                 request.Content = new StringContent(buildSMSXML(), Encoding.UTF8, "text/xml");
                 
                 var result = client.SendAsync(request).Result;
