@@ -38,8 +38,7 @@ namespace BettingTips.SMS
                     new XElement(soapenv + "Header",
                         new XElement(v2 + "RequestSOAPHeader",
                             new XElement(v2 + "spId", ShortCode.GetSpID()),
-                            new XElement(v2 + "spPassword", ShortCode.
-                            HashPassword(ShortCode.GetSpID() + ShortCode.GetPassword() + TimeStamp)),
+                            new XElement(v2 + "spPassword", ShortCode.HashPassword(ShortCode.GetSpID() + ShortCode.GetPassword() + TimeStamp)),
                             new XElement(v2 + "serviceId", "6013252000099929"),
                             new XElement(v2 + "timeStamp", TimeStamp)//,
                                                                      //new XElement(v2 + "linkid"),
@@ -69,9 +68,9 @@ namespace BettingTips.SMS
             using (var handler = new HttpClientHandler() { Credentials = new NetworkCredential(ShortCode.GetUsername(), ShortCode.HashPassword(ShortCode.GetSpID() + ShortCode.GetPassword() + TimeStamp)) })
             using (var client = new HttpClient(handler))
             {
-                client.BaseAddress = new Uri("http://localhost:57074");
+                client.BaseAddress = new Uri("http://192.168.9.177:8310");
 
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/SMSServices/SendSms/");
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/SendSmsService/services/SendSms/");
                 request.Content = new StringContent(buildSMSXML(), Encoding.UTF8, "text/xml");
                 
                 var result = client.SendAsync(request).Result;

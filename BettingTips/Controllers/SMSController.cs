@@ -28,7 +28,7 @@ namespace BettingTips.Controllers
         [HttpPost]
         public string Send(string destination, string message)
         {
-            Message sms = new Message() { Destination = destination, Text = message };
+            Message sms = new Message() { Destination = destination, Text = message, Correlator = "0000001" };
             return sms.Send() + sms.ToXML();
         }
 

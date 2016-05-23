@@ -17,7 +17,7 @@ namespace BettingTips
             app.UseHangfireServer();
             ConfigureAuth(app);
 
-            RecurringJob.AddOrUpdate(() => Jobs.ScheduleTipMessages(), Cron.Daily, TimeZoneInfo.Local);
+            RecurringJob.AddOrUpdate(() => Jobs.ScheduleTipMessages(), "0 2 * * *", TimeZoneInfo.Local);
             RecurringJob.AddOrUpdate(() => Jobs.SendScheduledMessages(), "10 8-20/2 * * *", TimeZoneInfo.Local);
         }
     }

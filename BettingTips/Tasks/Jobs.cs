@@ -30,8 +30,10 @@ namespace BettingTips.Tasks
                             Destination = subscriber.PhoneNumber,
                             TipNumber = subscriber.NextTip,
                             Tip = tip.Message,
+                            Type = "General",
                             ServiceId = subscriber.ServiceId,
-                            DateScheduled = DateTime.Now
+                            DateScheduled = DateTime.Now,
+                            ExpirationDate = DateTime.Now.AddHours(23)
                         };
 
                         db.ScheduledTips.Add(tipMessage);

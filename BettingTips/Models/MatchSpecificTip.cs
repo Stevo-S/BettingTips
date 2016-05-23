@@ -11,6 +11,7 @@ namespace BettingTips.Models
     {
         public int Id { get; set; }
         
+        [DataType(DataType.MultilineText)]
         [StringLength(900)]
         public string Tip { get; set; }
 
