@@ -314,6 +314,10 @@
     <Compile Include="Migrations\201605191738165_AddIndexesToScheduledTips.Designer.cs">
       <DependentUpon>201605191738165_AddIndexesToScheduledTips.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605241701532_AddWebRequests.cs" />
+    <Compile Include="Migrations\201605241701532_AddWebRequests.Designer.cs">
+      <DependentUpon>201605241701532_AddWebRequests.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Delivery.cs" />
@@ -325,6 +329,7 @@
     <Compile Include="Models\ScheduledTip.cs" />
     <Compile Include="Models\Subscriber.cs" />
     <Compile Include="Models\Tip.cs" />
+    <Compile Include="Models\WebRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SMS\ShortCode.cs" />
     <Compile Include="Startup.cs" />
@@ -488,6 +493,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605191738165_AddIndexesToScheduledTips.resx">
       <DependentUpon>201605191738165_AddIndexesToScheduledTips.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605241701532_AddWebRequests.resx">
+      <DependentUpon>201605241701532_AddWebRequests.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

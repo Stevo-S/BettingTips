@@ -38,5 +38,6 @@ namespace BettingTips.Models
         public DbSet<ScheduledTip> ScheduledTips { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
         public DbSet<MatchSpecificTip> MatchSpecificTips { get; set; }
+        public DbSet<WebRequest> WebRequests { get; set; }
     }
 }
