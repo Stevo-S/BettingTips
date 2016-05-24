@@ -51,7 +51,7 @@ namespace BettingTips.SMS
                             new XElement(loc + "senderName", sender),
                             new XElement(loc + "message", Text),
                             new XElement(loc + "receiptRequest",
-                                new XElement("endpoint", ShortCode.GetDeliveryNotificationEndpoint()),
+                                new XElement("endpoint", "http://" + ShortCode.GetHostPPPAddress() + "/BettingTips/SMSService/ReceiveDeliveryNotification"),
                                 new XElement("interfaceName", "SmsNotification"),
                                 new XElement("correlator", Correlator)
                             ) // End of receiptRequest

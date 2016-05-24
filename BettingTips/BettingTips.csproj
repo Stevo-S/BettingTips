@@ -104,12 +104,24 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -219,13 +231,16 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InboundMessagesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MatchSpecificTipsController.cs" />
     <Compile Include="Controllers\OutboundMessagesController.cs" />
     <Compile Include="Controllers\ScheduledTipsController.cs" />
     <Compile Include="Controllers\SMSController.cs" />
+    <Compile Include="Controllers\SMSServiceController.cs" />
     <Compile Include="Controllers\SubscribersController.cs" />
     <Compile Include="Controllers\TipsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -271,12 +286,41 @@
     <Compile Include="Migrations\201605101401136_AddDeliveries.Designer.cs">
       <DependentUpon>201605101401136_AddDeliveries.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605101542232_CorrectDeliveryTable.cs" />
+    <Compile Include="Migrations\201605101542232_CorrectDeliveryTable.Designer.cs">
+      <DependentUpon>201605101542232_CorrectDeliveryTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605101858545_AddMessagesToDelivery.cs" />
+    <Compile Include="Migrations\201605101858545_AddMessagesToDelivery.Designer.cs">
+      <DependentUpon>201605101858545_AddMessagesToDelivery.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605101921336_RemoveMessagesFromDelivery.cs" />
+    <Compile Include="Migrations\201605101921336_RemoveMessagesFromDelivery.Designer.cs">
+      <DependentUpon>201605101921336_RemoveMessagesFromDelivery.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605141744152_AddMatchSpecificTips.cs" />
+    <Compile Include="Migrations\201605141744152_AddMatchSpecificTips.Designer.cs">
+      <DependentUpon>201605141744152_AddMatchSpecificTips.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605181635255_AddIndicesToDeliveries.cs" />
+    <Compile Include="Migrations\201605181635255_AddIndicesToDeliveries.Designer.cs">
+      <DependentUpon>201605181635255_AddIndicesToDeliveries.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605191649132_AddTypeAndExpirationDateToScheduledTips.cs" />
+    <Compile Include="Migrations\201605191649132_AddTypeAndExpirationDateToScheduledTips.Designer.cs">
+      <DependentUpon>201605191649132_AddTypeAndExpirationDateToScheduledTips.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605191738165_AddIndexesToScheduledTips.cs" />
+    <Compile Include="Migrations\201605191738165_AddIndexesToScheduledTips.Designer.cs">
+      <DependentUpon>201605191738165_AddIndexesToScheduledTips.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Delivery.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\InboundMessage.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MatchSpecificTip.cs" />
     <Compile Include="Models\OutboundMessage.cs" />
     <Compile Include="Models\ScheduledTip.cs" />
     <Compile Include="Models\Subscriber.cs" />
@@ -285,7 +329,7 @@
     <Compile Include="SMS\ShortCode.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Tasks\Jobs.cs" />
-    <Compile Include="Views\SMS\Message.cs" />
+    <Compile Include="SMS\Message.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -376,6 +420,11 @@
     <Content Include="Views\ScheduledTips\Edit.cshtml" />
     <Content Include="Views\ScheduledTips\Index.cshtml" />
     <Content Include="Views\SMS\Send.cshtml" />
+    <Content Include="Views\MatchSpecificTips\Create.cshtml" />
+    <Content Include="Views\MatchSpecificTips\Delete.cshtml" />
+    <Content Include="Views\MatchSpecificTips\Details.cshtml" />
+    <Content Include="Views\MatchSpecificTips\Edit.cshtml" />
+    <Content Include="Views\MatchSpecificTips\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -418,6 +467,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605101401136_AddDeliveries.resx">
       <DependentUpon>201605101401136_AddDeliveries.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605101542232_CorrectDeliveryTable.resx">
+      <DependentUpon>201605101542232_CorrectDeliveryTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605101858545_AddMessagesToDelivery.resx">
+      <DependentUpon>201605101858545_AddMessagesToDelivery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605101921336_RemoveMessagesFromDelivery.resx">
+      <DependentUpon>201605101921336_RemoveMessagesFromDelivery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605141744152_AddMatchSpecificTips.resx">
+      <DependentUpon>201605141744152_AddMatchSpecificTips.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605181635255_AddIndicesToDeliveries.resx">
+      <DependentUpon>201605181635255_AddIndicesToDeliveries.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605191649132_AddTypeAndExpirationDateToScheduledTips.resx">
+      <DependentUpon>201605191649132_AddTypeAndExpirationDateToScheduledTips.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605191738165_AddIndexesToScheduledTips.resx">
+      <DependentUpon>201605191738165_AddIndexesToScheduledTips.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
