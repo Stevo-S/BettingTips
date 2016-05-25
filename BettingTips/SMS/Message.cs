@@ -73,6 +73,9 @@ namespace BettingTips.SMS
 
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/SendSmsService/services/SendSms/");
                 request.Content = new StringContent(buildSMSXML(), Encoding.UTF8, "text/xml");
+                string requestContentString = request.Content.ReadAsStringAsync().Result;
+                var result = client.SendAsync(request).Result;
+                string resultContent = result.Content.ReadAsStringAsync().Result;
 
                 // Log SendSMS Request.
                 // Useful for debugging multiple delivery notifications for the same request
@@ -81,12 +84,13 @@ namespace BettingTips.SMS
                     var webRequest = new Models.WebRequest()
                     {
                         Type = "SendSMS",
-                        Content = request.Content.ToString(),
+                        Content = requestContentString,
                         Timestamp = DateTime.Now
                     };
+                    db.WebRequests.Add(webRequest);
+                    db.SaveChanges();
                 }
-                var result = client.SendAsync(request).Result;
-                string resultContent = result.Content.ReadAsStringAsync().Result;
+
                 return resultContent;
             }
         }
