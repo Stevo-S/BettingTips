@@ -12,13 +12,13 @@ namespace BettingTips.Models
         public int Id { get; set; }
         
         [DataType(DataType.MultilineText)]
-        [StringLength(900)]
+        [StringLength(900), Required]
         public string Tip { get; set; }
 
-        [Index]
+        [Index, Required]
         public DateTime SendTime { get; set; }
 
-        [Index]
+        [Index, Required]
         public DateTime Expiration { get; set; }
     }
 }

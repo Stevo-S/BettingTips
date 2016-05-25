@@ -73,5 +73,10 @@ namespace BettingTips.Tasks
                 tipMessage.Send();
             }
         }
+
+        public static void ScheduleMatchSpecificTip(int matchSpecificTipId)
+        {
+
+        }
     }
 }

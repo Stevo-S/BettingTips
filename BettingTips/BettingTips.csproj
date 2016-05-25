@@ -318,6 +318,10 @@
     <Compile Include="Migrations\201605241701532_AddWebRequests.Designer.cs">
       <DependentUpon>201605241701532_AddWebRequests.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605241845488_RequireMatchTipMessageAndDates.cs" />
+    <Compile Include="Migrations\201605241845488_RequireMatchTipMessageAndDates.Designer.cs">
+      <DependentUpon>201605241845488_RequireMatchTipMessageAndDates.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Delivery.cs" />
@@ -496,6 +500,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605241701532_AddWebRequests.resx">
       <DependentUpon>201605241701532_AddWebRequests.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605241845488_RequireMatchTipMessageAndDates.resx">
+      <DependentUpon>201605241845488_RequireMatchTipMessageAndDates.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

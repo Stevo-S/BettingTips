@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BettingTips.Models;
+using Hangfire;
+using BettingTips.Tasks;
 
 namespace BettingTips.Controllers
 {
@@ -52,6 +54,7 @@ namespace BettingTips.Controllers
             {
                 db.MatchSpecificTips.Add(matchSpecificTip);
                 db.SaveChanges();
+                BackgroundJob.Schedule(() => Jobs.ScheduleMatchSpecificTip(matchSpecificTip.Id), matchSpecificTip.SendTime);
                 return RedirectToAction("Index");
             }
 
