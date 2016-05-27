@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 
@@ -13,6 +14,9 @@ namespace BettingTips.Models
         public DateTime FirstSubscriptionDate { get; set; }
         public DateTime LastSubscriptionDate { get; set; }
         public int NextTip { get; set; }
+
+        [DefaultValue(1)]
+        public int NextMatchTip { get; set; }
         public bool isActive { get; set; }
     }
 }
