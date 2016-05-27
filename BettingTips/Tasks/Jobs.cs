@@ -1,5 +1,6 @@
 ﻿using BettingTips.Models;
 using BettingTips.SMS;
+using Hangfire;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ namespace BettingTips.Tasks
 {
     public class Jobs
     {
+        [DisableConcurrentExecution(10000000)]
         public static void ScheduleTipMessages()
         {
             // Insert new Scheduled Messages containing tips of the day
@@ -48,6 +50,8 @@ namespace BettingTips.Tasks
         }
 
         // Send/re-send scheduled messages
+        [DisableConcurrentExecution(3600)]
+        [AutomaticRetry(Attempts = 3)]
         public static void SendScheduledMessages()
         {
             IEnumerable<ScheduledTip> queuedTips;
@@ -70,7 +74,14 @@ namespace BettingTips.Tasks
                     Correlator =  tip.Id.ToString()
                 };
 
-                tipMessage.Send();
+                try
+                {
+                    tipMessage.Send();
+                }
+                catch (System.AggregateException ae)
+                {
+                    continue;
+                }
             }
         }
 
