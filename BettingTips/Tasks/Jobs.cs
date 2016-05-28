@@ -3,6 +3,7 @@ using BettingTips.SMS;
 using Hangfire;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 
 namespace BettingTips.Tasks
@@ -39,10 +40,7 @@ namespace BettingTips.Tasks
                         };
 
                         db.ScheduledTips.Add(tipMessage);
-
-                        subscriber.NextTip += 1;
-                        db.Entry(subscriber).State = System.Data.Entity.EntityState.Modified;
-
+                        
                     }
                 }
                 db.SaveChanges();
@@ -72,6 +70,7 @@ namespace BettingTips.Tasks
                     Destination = tip.Destination,
                     Text = tip.Tip,
                     Correlator =  tip.Id.ToString()
+                    //Correlator =  (tip.Type == "General" ? "G" : "M") + tip.Id.ToString()
                 };
 
                 try
@@ -85,9 +84,41 @@ namespace BettingTips.Tasks
             }
         }
 
+        // Schedule match specific tips to be sent 
         public static void ScheduleMatchSpecificTip(int matchSpecificTipId)
         {
+            using (var db = new ApplicationDbContext())
+            {
+                db.Configuration.AutoDetectChangesEnabled = false;
+                db.Configuration.ValidateOnSaveEnabled = false;
 
+                db.Database.ExecuteSqlCommand("UPDATE dbo.Subscribers SET NextMatchTip = @tipId", 
+                    new SqlParameter("@tipId", matchSpecificTipId));
+
+                var subscribers = db.Subscribers.Where(s => s.isActive).ToList();
+
+                foreach (var subscriber in subscribers)
+                {
+                    var tip = db.MatchSpecificTips.Find(subscriber.NextMatchTip);
+                    if (tip != null)
+                    {
+                        var tipMessage = new ScheduledTip()
+                        {
+                            Destination = subscriber.PhoneNumber,
+                            TipNumber = subscriber.NextTip,
+                            Tip = tip.Tip,
+                            Type = "Match",
+                            ServiceId = subscriber.ServiceId,
+                            DateScheduled = DateTime.Now,
+                            ExpirationDate = tip.Expiration
+                        };
+
+                        db.ScheduledTips.Add(tipMessage);
+                        
+                    }
+                }
+                db.SaveChanges();
+            }
         }
     }
 }
