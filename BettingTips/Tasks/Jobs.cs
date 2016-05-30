@@ -10,7 +10,7 @@ namespace BettingTips.Tasks
 {
     public class Jobs
     {
-        [DisableConcurrentExecution(10000000)]
+        [DisableConcurrentExecution(3600)]
         public static void ScheduleTipMessages()
         {
             // Insert new Scheduled Messages containing tips of the day
