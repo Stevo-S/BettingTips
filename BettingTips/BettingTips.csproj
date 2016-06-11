@@ -335,6 +335,10 @@
     <Compile Include="Migrations\201605271419173_AddNextMatchTipToSubscribers.Designer.cs">
       <DependentUpon>201605271419173_AddNextMatchTipToSubscribers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606061753506_AddTypeToDeliveries.cs" />
+    <Compile Include="Migrations\201606061753506_AddTypeToDeliveries.Designer.cs">
+      <DependentUpon>201606061753506_AddTypeToDeliveries.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Delivery.cs" />
@@ -528,6 +532,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605271419173_AddNextMatchTipToSubscribers.resx">
       <DependentUpon>201605271419173_AddNextMatchTipToSubscribers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606061753506_AddTypeToDeliveries.resx">
+      <DependentUpon>201606061753506_AddTypeToDeliveries.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -38,9 +38,12 @@ namespace BettingTips.Controllers
                                     (from el in soapEnvelope.Descendants(ns1 + "serviceId")
                                      select el).First();
 
-            int correlator = (int)
+            string correlatorString = (string)
                                 (from el in soapEnvelope.Descendants(ns2 + "correlator")
                                  select el).First();
+
+            int correlator;
+            Int32.TryParse(correlatorString.Substring(1), out correlator);
 
             string traceUniqueId = (string)
                                         (from el in soapEnvelope.Descendants(ns1 + "traceUniqueID")
@@ -56,7 +59,8 @@ namespace BettingTips.Controllers
                     ServiceId = serviceId,
                     Correlator = correlator,
                     TimeStamp = DateTime.Now,
-                    TraceUniqueId = traceUniqueId
+                    TraceUniqueId = traceUniqueId,
+                    Type = correlatorString.First() == 'G' ? "General" : "Match"
                 };
 
                 if (deliveryStatus.ToLower().Equals("deliveredtoterminal"))
@@ -64,7 +68,15 @@ namespace BettingTips.Controllers
                     var subscribers = db.Subscribers.Where(s => s.PhoneNumber.Equals(destination));
                     if (subscribers.Any() && subscribers.First().isActive)
                     {
-                        subscribers.First().NextTip += 1;
+                        // Move subscriber to the next tip depending on the type of tip delivered
+                        if (deliveryNotification.Type == "General")
+                        {
+                            subscribers.First().NextTip += 1; 
+                        }
+                        else 
+                        {
+                            subscribers.First().NextMatchTip += 1;
+                        }
                     }
                 }
 

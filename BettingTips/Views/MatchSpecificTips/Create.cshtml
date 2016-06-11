@@ -11,7 +11,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>MatchSpecificTip</h4>
+        <h4>Match Specific Tip</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -25,7 +25,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.SendTime, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.SendTime, new { htmlAttributes = new { @class = "form-control", type = "datetime-local" } })
+                @Html.EditorFor(model => model.SendTime, new { htmlAttributes = new { @class = "form-control", type = "datetime-local", id = "SendTime" } })
                 @Html.ValidationMessageFor(model => model.SendTime, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -33,19 +33,19 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Expiration, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Expiration, new { htmlAttributes = new { @class = "form-control", type = "datetime-local" } })
+                @Html.EditorFor(model => model.Expiration, new { htmlAttributes = new { @class = "form-control", type = "datetime-local", id = "Expiration" } })
                 @Html.ValidationMessageFor(model => model.Expiration, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Schedule" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("« Back to List", "Index", null, new { @class = "btn btn-info" })
 </div>
