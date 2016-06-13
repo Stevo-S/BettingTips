@@ -41,7 +41,7 @@ namespace BettingTips.Models
                 }
 
                 // Ensure no other entry in the database contains
-                if (db.MatchSpecificTips.Max(mst => mst.SendTime) > SendTime)
+                if (db.MatchSpecificTips.Any() && db.MatchSpecificTips.Max(mst => mst.SendTime) > SendTime)
                 {
                     yield return new ValidationResult("New match tips cannot have send times" + 
                         " earlier than existing match tips!");
