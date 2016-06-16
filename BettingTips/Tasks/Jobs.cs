@@ -60,11 +60,19 @@ namespace BettingTips.Tasks
             // and whose expiry date has not lapsed
             using (var db = new ApplicationDbContext())
             {
-                var successfulMessagesIdList = db.Deliveries.Where(d => d.TimeStamp > DateTime.Today && 
-                                        d.DeliveryStatus.ToLower().Equals("deliveredtoterminal")).Select(d => d.Correlator).ToList();
+                //var successfulMessagesIdList = db.Deliveries.Where(d => d.TimeStamp > DateTime.Today && 
+                //                        d.DeliveryStatus.ToLower().Equals("deliveredtoterminal")).Select(d => d.Correlator).ToList();
 
-                queuedTips = db.ScheduledTips.Where(st => st.DateScheduled > DateTime.Today && st.ExpirationDate > DateTime.Now &&
-                                                !successfulMessagesIdList.Contains(st.Id)).ToList();
+                //queuedTips = db.ScheduledTips.Where(st => st.DateScheduled > DateTime.Today && st.ExpirationDate > DateTime.Now &&
+                //                                !successfulMessagesIdList.Contains(st.Id)).ToList();
+
+                queuedTips = (from tip in db.ScheduledTips.Where(st => st.DateScheduled > DateTime.Today)
+                              join delivery in db.Deliveries.Where(d => d.DeliveryStatus.ToLower().Equals("deliveredtoterminal"))
+                              on tip.Id equals delivery.Correlator
+                              into gj
+                              from delivery in gj.DefaultIfEmpty()
+                              where delivery == null
+                              select tip).ToList();
             }
 
             // Send the collected messages if the expiration date has not yet lapsed

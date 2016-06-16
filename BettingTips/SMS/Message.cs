@@ -79,17 +79,17 @@ namespace BettingTips.SMS
 
                 // Log SendSMS Request.
                 // Useful for debugging multiple delivery notifications for the same request
-                using (var db = new ApplicationDbContext())
-                {
-                    var webRequest = new Models.WebRequest()
-                    {
-                        Type = "SendSMS",
-                        Content = requestContentString,
-                        Timestamp = DateTime.Now
-                    };
-                    db.WebRequests.Add(webRequest);
-                    db.SaveChanges();
-                }
+                //using (var db = new ApplicationDbContext())
+                //{
+                //    var webRequest = new Models.WebRequest()
+                //    {
+                //        Type = "SendSMS",
+                //        Content = requestContentString,
+                //        Timestamp = DateTime.Now
+                //    };
+                //    db.WebRequests.Add(webRequest);
+                //    db.SaveChanges();
+                //}
 
                 return resultContent;
             }
