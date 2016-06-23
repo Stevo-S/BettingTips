@@ -54,20 +54,20 @@ namespace BettingTips.SMS
             return HostPPPAddress;
         }
 
-        public static void sendScheduledTips()
-        {
+        //public static void sendScheduledTips()
+        //{
 
-            using (var db = new ApplicationDbContext())
-            {
-                var scheduledTips = db.ScheduledTips.Where(st => st.DateScheduled > DateTime.Today);
+        //    using (var db = new ApplicationDbContext())
+        //    {
+        //        var scheduledTips = db.ScheduledTips.Where(st => st.DateScheduled > DateTime.Today);
 
-                foreach (var tip in scheduledTips)
-                {
-                    Message sms = new Message() { Destination = tip.Destination, Text = tip.Tip, Correlator = tip.Id.ToString() };
-                    sms.Send();
-                }
-            }
-        }
+        //        foreach (var tip in scheduledTips)
+        //        {
+        //            Message sms = new Message() { Destination = tip.Destination, Text = tip.Tip, Correlator = tip.Id.ToString() };
+        //            sms.Send();
+        //        }
+        //    }
+        //}
         
 
         public static string HashPassword(string input)

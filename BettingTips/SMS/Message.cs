@@ -1,8 +1,11 @@
 ﻿using BettingTips.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace BettingTips.SMS
@@ -19,13 +22,19 @@ namespace BettingTips.SMS
             this.TimeStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
         }
 
-
+        public Message(ScheduledTip tip)
+        {
+            this.TimeStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+            this.Text = tip.Tip;
+            this.Destination = tip.Destination;
+            this.Correlator = (tip.Type == "General" ? "G" : "M") + tip.Id.ToString();
+        }
         public string ToXML()
         {
             return buildSMSXML();
         }
 
-        private string buildSMSXML(string serviceId = "6013252000099929", string sender = "20043")
+        private string buildSMSXML(string serviceId = "6013252000099929", string sender = "20043", string timestampString = "")
         {
             //string timeStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
             XNamespace soapenv = ShortCode.SOAPRequestNamespaces["soapenv"];
@@ -39,7 +48,7 @@ namespace BettingTips.SMS
                     new XElement(soapenv + "Header",
                         new XElement(v2 + "RequestSOAPHeader",
                             new XElement(v2 + "spId", ShortCode.GetSpID()),
-                            new XElement(v2 + "spPassword", ShortCode.HashPassword(ShortCode.GetSpID() + ShortCode.GetPassword() + TimeStamp)),
+                            new XElement(v2 + "spPassword", ShortCode.HashPassword(ShortCode.GetSpID() + ShortCode.GetPassword() + (string.IsNullOrEmpty(timestampString) ? TimeStamp : timestampString))),
                             new XElement(v2 + "serviceId", "6013252000099929"),
                             new XElement(v2 + "timeStamp", TimeStamp)//,
                                                                      //new XElement(v2 + "linkid"),
@@ -92,6 +101,52 @@ namespace BettingTips.SMS
                 //}
 
                 return resultContent;
+            }
+
+        }
+
+        public static void SendMany(IEnumerable<ScheduledTip> tips)
+        {
+            string currentTimestampString = DateTime.Now.ToString("yyyyMMddHHmmss");
+            List<HttpRequestMessage> requests = new List<HttpRequestMessage>();
+            using (var handler = new HttpClientHandler() { Credentials = new NetworkCredential(ShortCode.GetUsername(), ShortCode.HashPassword(ShortCode.GetSpID() + ShortCode.GetPassword() + currentTimestampString)) })
+            using (var client = new HttpClient(handler))
+            {
+                client.BaseAddress = new Uri("http://192.168.9.177:8310");
+
+                foreach (var tip in tips)
+                {
+
+                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "/SendSmsService/services/SendSms/");
+
+                    var message = new Message(tip);
+                    request.Content = new StringContent(message.buildSMSXML(timestampString: currentTimestampString), Encoding.UTF8, "text/xml");
+                    //string requestContentString = request.Content.ReadAsStringAsync().Result;
+                    requests.Add(request);
+                }
+
+                //Task[] sendRequests = (from request in requests
+                //                       select Task.Run(async () =>
+                //                       {
+                //                           await client.SendAsync(request);
+                //                       })).ToArray();
+
+                //Task.WaitAll(sendRequests, -1);
+
+                var taskList = new List<Task>();
+                foreach (var request in requests)
+                {
+                    taskList.Add(client.SendAsync(request));
+                }
+
+                try
+                {
+                    Task.WaitAll(taskList.ToArray());
+                }
+                catch (Exception)
+                {
+                    ;
+                }
             }
         }
     }

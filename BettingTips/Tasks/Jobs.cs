@@ -40,7 +40,7 @@ namespace BettingTips.Tasks
                         };
 
                         db.ScheduledTips.Add(tipMessage);
-                        
+
                     }
                 }
                 db.SaveChanges();
@@ -60,11 +60,6 @@ namespace BettingTips.Tasks
             // and whose expiry date has not lapsed
             using (var db = new ApplicationDbContext())
             {
-                //var successfulMessagesIdList = db.Deliveries.Where(d => d.TimeStamp > DateTime.Today && 
-                //                        d.DeliveryStatus.ToLower().Equals("deliveredtoterminal")).Select(d => d.Correlator).ToList();
-
-                //queuedTips = db.ScheduledTips.Where(st => st.DateScheduled > DateTime.Today && st.ExpirationDate > DateTime.Now &&
-                //                                !successfulMessagesIdList.Contains(st.Id)).ToList();
 
                 queuedTips = (from tip in db.ScheduledTips.Where(st => st.DateScheduled > DateTime.Today)
                               join delivery in db.Deliveries.Where(d => d.DeliveryStatus.ToLower().Equals("deliveredtoterminal"))
@@ -76,28 +71,15 @@ namespace BettingTips.Tasks
             }
 
             // Send the collected messages if the expiration date has not yet lapsed
-            foreach (var tip in queuedTips)
+            // Send the message asynchronously in batches
+            int skipFactor = 512;
+            int iterations = (queuedTips.Count() / skipFactor) + 1;
+            for (int i = 0; i < iterations; i++)
             {
-                if (DateTime.Now < tip.ExpirationDate)
-                {
-                    var tipMessage = new Message()
-                    {
-                        Destination = tip.Destination,
-                        Text = tip.Tip,
-                        //Correlator = tip.Id.ToString()
-                        Correlator = (tip.Type == "General" ? "G" : "M") + tip.Id.ToString()
-                    };
-
-                    try
-                    {
-                        tipMessage.Send();
-                    }
-                    catch (System.AggregateException ae)
-                    {
-                        continue;
-                    } 
-                }
+                Message.SendMany((from tip in queuedTips select tip).Skip(i * skipFactor).Take(skipFactor));
+               
             }
+            
         }
 
         // Schedule match specific tips to be sent 
@@ -108,14 +90,15 @@ namespace BettingTips.Tasks
                 db.Configuration.AutoDetectChangesEnabled = false;
                 db.Configuration.ValidateOnSaveEnabled = false;
 
-                db.Database.ExecuteSqlCommand("UPDATE dbo.Subscribers SET NextMatchTip = @tipId WHERE NextMatchTip < @tipId", 
-                    new SqlParameter("@tipId", matchSpecificTipId));
+                //db.Database.ExecuteSqlCommand("UPDATE dbo.Subscribers SET NextMatchTip = @tipId WHERE NextMatchTip < @tipId",
+                //    new SqlParameter("@tipId", matchSpecificTipId));
 
                 var subscribers = db.Subscribers.Where(s => s.isActive).ToList();
 
                 foreach (var subscriber in subscribers)
                 {
-                    var tip = db.MatchSpecificTips.Find(subscriber.NextMatchTip);
+                    int nextMatchTip = subscriber.NextMatchTip < matchSpecificTipId ? matchSpecificTipId : subscriber.NextMatchTip;
+                    var tip = db.MatchSpecificTips.Find(nextMatchTip);
                     if (tip != null)
                     {
                         var tipMessage = new ScheduledTip()
@@ -129,8 +112,9 @@ namespace BettingTips.Tasks
                             ExpirationDate = tip.Expiration
                         };
 
+                        subscriber.NextMatchTip = matchSpecificTipId + 1;
                         db.ScheduledTips.Add(tipMessage);
-                        
+
                     }
                 }
                 db.SaveChanges();
