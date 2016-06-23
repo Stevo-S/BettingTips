@@ -37,7 +37,7 @@
     </dl>
 </div>
 <p>
-    @if (Model.Expiration < DateTime.Now)
+    @if (DateTime.Now < Model.Expiration)
     {
         Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-info btn-sm" });
     }
