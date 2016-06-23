@@ -1,4 +1,5 @@
-﻿@model IEnumerable<BettingTips.Models.MatchSpecificTip>
+﻿@model PagedList.IPagedList<BettingTips.Models.MatchSpecificTip>
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "Match Tips";
@@ -17,13 +18,13 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Tip)
+            @Html.DisplayNameFor(model => model.First().Tip)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SendTime)
+            @Html.DisplayNameFor(model => model.First().SendTime)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Expiration)
+            @Html.DisplayNameFor(model => model.First().Expiration)
         </th>
         <th></th>
     </tr>
@@ -51,3 +52,9 @@
 }
 
 </table>
+
+<br />
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of (@Model.PageCount)
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))

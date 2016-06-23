@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using BettingTips.Models;
 using Hangfire;
 using BettingTips.Tasks;
+using PagedList;
 
 namespace BettingTips.Controllers
 {
@@ -17,9 +18,14 @@ namespace BettingTips.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: MatchSpecificTips
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            return View(db.MatchSpecificTips.ToList());
+            var tips = from t in db.MatchSpecificTips
+                       select t;
+            tips = tips.OrderBy(t => t.Id);
+            int pageNumber = (page ?? 1);
+            int pageSize = 25;
+            return View(tips.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: MatchSpecificTips/Details/5
