@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BettingTips.Models;
+using PagedList;
 
 namespace BettingTips.Controllers
 {
@@ -16,9 +17,14 @@ namespace BettingTips.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: OutboundMessages
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            return View(db.OutboundMessages.ToList());
+            var messages = from m in db.OutboundMessages
+                           select m;
+            messages = messages.OrderByDescending(m => m.Id);
+            int pageNumber = (page ?? 1);
+            int pageSize = 25;
+            return View(messages.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: OutboundMessages/Details/5
