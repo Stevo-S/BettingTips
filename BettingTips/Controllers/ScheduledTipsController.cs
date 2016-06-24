@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BettingTips.Models;
+using PagedList;
 
 namespace BettingTips.Controllers
 {
@@ -16,9 +17,14 @@ namespace BettingTips.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: ScheduledTips
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            return View(db.ScheduledTips.ToList());
+            var scheduledTips = from s in db.ScheduledTips
+                                select s;
+            scheduledTips = scheduledTips.OrderByDescending(s => s.Id);
+            int pageNumber = (page ?? 1);
+            int pageSize = 25;
+            return View(scheduledTips.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: ScheduledTips/Details/5
