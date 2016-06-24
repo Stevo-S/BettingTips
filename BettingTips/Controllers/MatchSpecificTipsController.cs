@@ -22,7 +22,7 @@ namespace BettingTips.Controllers
         {
             var tips = from t in db.MatchSpecificTips
                        select t;
-            tips = tips.OrderBy(t => t.Id);
+            tips = tips.OrderByDescending(t => t.Id);
             int pageNumber = (page ?? 1);
             int pageSize = 25;
             return View(tips.ToPagedList(pageNumber, pageSize));
